@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Translation Program</title>
+<style type="text/css">
+p {
+	text-indent: 2em;
+	margin: 5px;
+	font-size: 4vw;
+}
+
+span {
+	color: DeepSkyBlue
+}
+
+.icon {
+	width: 68px;
+	height: 68px;
+	background: url('./background/a.jpg');
+	display: inline-block;
+}
+
+.ss {
+	color: Crimson
+}
+
+.word {
+	color: DarkOliveGreen
+}
+
+#player {
+	position: fixed;
+	top: 100px;
+}
+</style>
+<script type="text/javascript" src="./js/jquery-3.3.1.js"></script>
+<script>
+		function hide(ob) {
+			var id = $(ob).attr("id");
+
+			var iNum1 = parseInt(id);
+			iNum1 += 1;
+
+			$("#" + iNum1).slideToggle(100);
+
+		}
+	</script>
+</head>
+<body>
+	<p>
+		<span id="${phrase}" onclick="hide(this)">abc</span> <span
+			id="${phrase+1}" style="display: none" class="word">abc1</span>
+	</p>
+</body>
+</html>

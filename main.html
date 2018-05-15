@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>jQuery可展开收缩三级下拉菜单代码 - 16素材网</title>
+<style type="text/css">
+*{margin: 0;padding: 0}
+body{font-size: 12px;font-family: "宋体","微软雅黑";}
+ul,li{list-style: none;}
+a:link,a:visited{text-decoration: none;}
+.list{width: 210px;border-bottom:solid 1px #316a91;margin:40px auto 0 40px;}
+.list ul li{background-color:#467ca2; border:solid 1px #316a91; border-bottom:0;}
+.list ul li a{padding-left: 10px;color: #fff; font-size:12px; display: block; font-weight:bold; height:36px;line-height: 36px;position: relative;
+}
+.list ul li .inactive{ background:url(images/off.png) no-repeat 184px center;}
+.list ul li .inactives{background:url(images/on.png) no-repeat 184px center;} 
+.list ul li ul{display: none;}
+.list ul li ul li { border-left:0; border-right:0; background-color:#6196bb; border-color:#467ca2;}
+.list ul li ul li ul{display: none;}
+.list ul li ul li a{ padding-left:20px;}
+.list ul li ul li ul li { background-color:#d6e6f1; border-color:#6196bb; }
+.last{ background-color:#d6e6f1; border-color:#6196bb; }
+.list ul li ul li ul li a{ color:#316a91; padding-left:30px;}
+</style>
+<script type="text/javascript" src="jquery-3.3.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.inactive').click(function(){
+		if($(this).siblings('ul').css('display')=='none'){
+			$(this).parent('li').siblings('li').removeClass('inactives');
+			$(this).addClass('inactives');
+			$(this).siblings('ul').slideDown(100).children('li');
+			if($(this).parents('li').siblings('li').children('ul').css('display')=='block'){
+				$(this).parents('li').siblings('li').children('ul').parent('li').children('a').removeClass('inactives');
+				$(this).parents('li').siblings('li').children('ul').slideUp(100);
+
+			}
+		}else{
+			//控制自身变成+号
+			$(this).removeClass('inactives');
+			//控制自身菜单下子菜单隐藏
+			$(this).siblings('ul').slideUp(100);
+			//控制自身子菜单变成+号
+			$(this).siblings('ul').children('li').children('ul').parent('li').children('a').addClass('inactives');
+			//控制自身菜单下子菜单隐藏
+			$(this).siblings('ul').children('li').children('ul').slideUp(100);
+
+			//控制同级菜单只保持一个是展开的（-号显示）
+			$(this).siblings('ul').children('li').children('a').removeClass('inactives');
+		}
+	})
+});
+</script>
+</head>
+<body>
+<div class="list">
+	<ul class="yiji">
+		<li><a href="#" class="inactive">2018</a>
+<ul style="display: block">
+<li><a href="#" class="inactive active">4月</a><ul>
+	<li><a href="">2018-04-29号</a></li>	<li><a href="">2018-04-30号</a></li></ul>
+<li><a href="#" class="inactive active">5月</a><ul>
+	<li><a href="">2018-05-01号</a></li>	<li><a href="">2018-05-02号</a></li>	<li><a href="">2018-05-03号</a></li>	<li><a href="">2018-05-04号</a></li>	<li><a href="">2018-05-05号</a></li>	<li><a href="">2018-05-06号</a></li>	<li><a href="">2018-05-07号</a></li>	<li><a href="">2018-05-08号</a></li>	<li><a href="">2018-05-09号</a></li>	<li><a href="">2018-05-10号</a></li>	<li><a href="">2018-05-11号</a></li>	<li><a href="">2018-05-12号</a></li>	<li><a href="">2018-05-13号</a></li>	<li><a href="">2018-05-14号</a></li>	<li><a href="">2018-05-15号</a></li>	<li><a href="">2018-05-16号</a></li>	<li><a href="">2018-05-17号</a></li>	<li><a href="">2018-05-18号</a></li>	<li><a href="">2018-05-19号</a></li>	<li><a href="">2018-05-20号</a></li>	<li><a href="">2018-05-21号</a></li>	<li><a href="">2018-05-22号</a></li>	<li><a href="">2018-05-23号</a></li>	<li><a href="">2018-05-24号</a></li>	<li><a href="">2018-05-25号</a></li>	<li><a href="">2018-05-26号</a></li>	<li><a href="">2018-05-27号</a></li>	<li><a href="">2018-05-28号</a></li>	<li><a href="">2018-05-29号</a></li>	<li><a href="">2018-05-30号</a></li>	<li><a href="">2018-05-31号</a></li></ul>
+<li><a href="#" class="inactive active">6月</a><ul>
+	<li><a href="">2018-06-01号</a></li>	<li><a href="">2018-06-02号</a></li>	<li><a href="">2018-06-03号</a></li>	<li><a href="">2018-06-04号</a></li>	<li><a href="">2018-06-05号</a></li>	<li><a href="">2018-06-06号</a></li>	<li><a href="">2018-06-07号</a></li>	<li><a href="">2018-06-08号</a></li>	<li><a href="">2018-06-09号</a></li>	<li><a href="">2018-06-10号</a></li>	<li><a href="">2018-06-11号</a></li>	<li><a href="">2018-06-12号</a></li>	<li><a href="">2018-06-13号</a></li>	<li><a href="">2018-06-14号</a></li>	<li><a href="">2018-06-15号</a></li>	<li><a href="">2018-06-16号</a></li>	<li><a href="">2018-06-17号</a></li>	<li><a href="">2018-06-18号</a></li>	<li><a href="">2018-06-19号</a></li>	<li><a href="">2018-06-20号</a></li>	<li><a href="">2018-06-21号</a></li>	<li><a href="">2018-06-22号</a></li>	<li><a href="">2018-06-23号</a></li>	<li><a href="">2018-06-24号</a></li>	<li><a href="">2018-06-25号</a></li>	<li><a href="">2018-06-26号</a></li>	<li><a href="">2018-06-27号</a></li>	<li><a href="">2018-06-28号</a></li>	<li><a href="">2018-06-29号</a></li>	<li><a href="">2018-06-30号</a></li></ul>
+<li><a href="#" class="inactive active">7月</a><ul>
+	<li><a href="">2018-07-01号</a></li>	<li><a href="">2018-07-02号</a></li>	<li><a href="">2018-07-03号</a></li>	<li><a href="">2018-07-04号</a></li>	<li><a href="">2018-07-05号</a></li>	<li><a href="">2018-07-06号</a></li>	<li><a href="">2018-07-07号</a></li>	<li><a href="">2018-07-08号</a></li>	<li><a href="">2018-07-09号</a></li>	<li><a href="">2018-07-10号</a></li>	<li><a href="">2018-07-11号</a></li>	<li><a href="">2018-07-12号</a></li>	<li><a href="">2018-07-13号</a></li>	<li><a href="">2018-07-14号</a></li>	<li><a href="">2018-07-15号</a></li>	<li><a href="">2018-07-16号</a></li>	<li><a href="">2018-07-17号</a></li>	<li><a href="">2018-07-18号</a></li>	<li><a href="">2018-07-19号</a></li>	<li><a href="">2018-07-20号</a></li>	<li><a href="">2018-07-21号</a></li>	<li><a href="">2018-07-22号</a></li>	<li><a href="">2018-07-23号</a></li>	<li><a href="">2018-07-24号</a></li>	<li><a href="">2018-07-25号</a></li>	<li><a href="">2018-07-26号</a></li>	<li><a href="">2018-07-27号</a></li>	<li><a href="">2018-07-28号</a></li>	<li><a href="">2018-07-29号</a></li>	<li><a href="">2018-07-30号</a></li>	<li><a href="">2018-07-31号</a></li></ul>
+<li><a href="#" class="inactive active">8月</a><ul>
+	<li><a href="">2018-08-01号</a></li>	<li><a href="">2018-08-02号</a></li>	<li><a href="">2018-08-03号</a></li>	<li><a href="">2018-08-04号</a></li>	<li><a href="">2018-08-05号</a></li>	<li><a href="">2018-08-06号</a></li>	<li><a href="">2018-08-07号</a></li>	<li><a href="">2018-08-08号</a></li>	<li><a href="">2018-08-09号</a></li>	<li><a href="">2018-08-10号</a></li>	<li><a href="">2018-08-11号</a></li>	<li><a href="">2018-08-12号</a></li>	<li><a href="">2018-08-13号</a></li>	<li><a href="">2018-08-14号</a></li>	<li><a href="">2018-08-15号</a></li>	<li><a href="">2018-08-16号</a></li>	<li><a href="">2018-08-17号</a></li>	<li><a href="">2018-08-18号</a></li>	<li><a href="">2018-08-19号</a></li>	<li><a href="">2018-08-20号</a></li>	<li><a href="">2018-08-21号</a></li>	<li><a href="">2018-08-22号</a></li>	<li><a href="">2018-08-23号</a></li>	<li><a href="">2018-08-24号</a></li>	<li><a href="">2018-08-25号</a></li>	<li><a href="">2018-08-26号</a></li>	<li><a href="">2018-08-27号</a></li>	<li><a href="">2018-08-28号</a></li>	<li><a href="">2018-08-29号</a></li>	<li><a href="">2018-08-30号</a></li>	<li><a href="">2018-08-31号</a></li></ul>
+<li><a href="#" class="inactive active">9月</a><ul>
+	<li><a href="">2018-09-01号</a></li>	<li><a href="">2018-09-02号</a></li>	<li><a href="">2018-09-03号</a></li>	<li><a href="">2018-09-04号</a></li>	<li><a href="">2018-09-05号</a></li>	<li><a href="">2018-09-06号</a></li>	<li><a href="">2018-09-07号</a></li>	<li><a href="">2018-09-08号</a></li>	<li><a href="">2018-09-09号</a></li>	<li><a href="">2018-09-10号</a></li>	<li><a href="">2018-09-11号</a></li>	<li><a href="">2018-09-12号</a></li>	<li><a href="">2018-09-13号</a></li>	<li><a href="">2018-09-14号</a></li>	<li><a href="">2018-09-15号</a></li>	<li><a href="">2018-09-16号</a></li>	<li><a href="">2018-09-17号</a></li>	<li><a href="">2018-09-18号</a></li>	<li><a href="">2018-09-19号</a></li>	<li><a href="">2018-09-20号</a></li>	<li><a href="">2018-09-21号</a></li>	<li><a href="">2018-09-22号</a></li>	<li><a href="">2018-09-23号</a></li>	<li><a href="">2018-09-24号</a></li>	<li><a href="">2018-09-25号</a></li>	<li><a href="">2018-09-26号</a></li>	<li><a href="">2018-09-27号</a></li>	<li><a href="">2018-09-28号</a></li>	<li><a href="">2018-09-29号</a></li>	<li><a href="">2018-09-30号</a></li></ul>
+<li><a href="#" class="inactive active">10月</a><ul>
+	<li><a href="">2018-10-01号</a></li>	<li><a href="">2018-10-02号</a></li>	<li><a href="">2018-10-03号</a></li>	<li><a href="">2018-10-04号</a></li>	<li><a href="">2018-10-05号</a></li>	<li><a href="">2018-10-06号</a></li>	<li><a href="">2018-10-07号</a></li>	<li><a href="">2018-10-08号</a></li>	<li><a href="">2018-10-09号</a></li>	<li><a href="">2018-10-10号</a></li>	<li><a href="">2018-10-11号</a></li>	<li><a href="">2018-10-12号</a></li>	<li><a href="">2018-10-13号</a></li>	<li><a href="">2018-10-14号</a></li>	<li><a href="">2018-10-15号</a></li>	<li><a href="">2018-10-16号</a></li>	<li><a href="">2018-10-17号</a></li>	<li><a href="">2018-10-18号</a></li>	<li><a href="">2018-10-19号</a></li>	<li><a href="">2018-10-20号</a></li>	<li><a href="">2018-10-21号</a></li>	<li><a href="">2018-10-22号</a></li>	<li><a href="">2018-10-23号</a></li>	<li><a href="">2018-10-24号</a></li>	<li><a href="">2018-10-25号</a></li>	<li><a href="">2018-10-26号</a></li>	<li><a href="">2018-10-27号</a></li>	<li><a href="">2018-10-28号</a></li>	<li><a href="">2018-10-29号</a></li>	<li><a href="">2018-10-30号</a></li>	<li><a href="">2018-10-31号</a></li></ul>
+<li><a href="#" class="inactive active">11月</a><ul>
+	<li><a href="">2018-11-01号</a></li>	<li><a href="">2018-11-02号</a></li>	<li><a href="">2018-11-03号</a></li>	<li><a href="">2018-11-04号</a></li>	<li><a href="">2018-11-05号</a></li>	<li><a href="">2018-11-06号</a></li>	<li><a href="">2018-11-07号</a></li>	<li><a href="">2018-11-08号</a></li>	<li><a href="">2018-11-09号</a></li>	<li><a href="">2018-11-10号</a></li>	<li><a href="">2018-11-11号</a></li>	<li><a href="">2018-11-12号</a></li>	<li><a href="">2018-11-13号</a></li>	<li><a href="">2018-11-14号</a></li>	<li><a href="">2018-11-15号</a></li>	<li><a href="">2018-11-16号</a></li>	<li><a href="">2018-11-17号</a></li>	<li><a href="">2018-11-18号</a></li>	<li><a href="">2018-11-19号</a></li>	<li><a href="">2018-11-20号</a></li>	<li><a href="">2018-11-21号</a></li>	<li><a href="">2018-11-22号</a></li>	<li><a href="">2018-11-23号</a></li>	<li><a href="">2018-11-24号</a></li>	<li><a href="">2018-11-25号</a></li>	<li><a href="">2018-11-26号</a></li>	<li><a href="">2018-11-27号</a></li>	<li><a href="">2018-11-28号</a></li>	<li><a href="">2018-11-29号</a></li>	<li><a href="">2018-11-30号</a></li></ul>
+<li><a href="#" class="inactive active">12月</a><ul>
+	<li><a href="">2018-12-01号</a></li>	<li><a href="">2018-12-02号</a></li>	<li><a href="">2018-12-03号</a></li>	<li><a href="">2018-12-04号</a></li>	<li><a href="">2018-12-05号</a></li>	<li><a href="">2018-12-06号</a></li>	<li><a href="">2018-12-07号</a></li>	<li><a href="">2018-12-08号</a></li>	<li><a href="">2018-12-09号</a></li>	<li><a href="">2018-12-10号</a></li>	<li><a href="">2018-12-11号</a></li>	<li><a href="">2018-12-12号</a></li>	<li><a href="">2018-12-13号</a></li>	<li><a href="">2018-12-14号</a></li>	<li><a href="">2018-12-15号</a></li>	<li><a href="">2018-12-16号</a></li>	<li><a href="">2018-12-17号</a></li>	<li><a href="">2018-12-18号</a></li>	<li><a href="">2018-12-19号</a></li>	<li><a href="">2018-12-20号</a></li>	<li><a href="">2018-12-21号</a></li>	<li><a href="">2018-12-22号</a></li>	<li><a href="">2018-12-23号</a></li>	<li><a href="">2018-12-24号</a></li>	<li><a href="">2018-12-25号</a></li>	<li><a href="">2018-12-26号</a></li>	<li><a href="">2018-12-27号</a></li>	<li><a href="">2018-12-28号</a></li>	<li><a href="">2018-12-29号</a></li>	<li><a href="">2018-12-30号</a></li>	<li><a href="">2018-12-31号</a></li></ul>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+</div>
+</body>
+</html>
+</ul>

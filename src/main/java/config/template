@@ -1,0 +1,6 @@
+@RequestMapping("${function}")
+	public ModelAndView single() {
+	    ${class}.${function}();
+		ModelAndView model = new ModelAndView("abc");
+		return model;
+	}

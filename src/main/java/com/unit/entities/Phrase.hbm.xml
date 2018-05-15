@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-4-22 10:59:00 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="com.unit.entities.Phrase" table="PHRASE">
+		<id name="word" type="java.lang.String">
+			<column name="WORD" />
+			<generator class="assigned" />
+		</id>
+		<property name="translate_in" type="java.lang.String">
+			<column name="TRANSLATE_IN" />
+		</property>
+		<property name="singleWord" type="boolean">
+		<column name="SINGLEWORD"></column>
+		</property>
+		<property name="timestamp" type="java.sql.Timestamp">
+			<column name="TIMESTAMP" />
+		</property>
+		<set name="paragraphs" table="PARAGRAPH_PHRASE" inverse="true">
+			<key>
+				<column name="word" />
+			</key>
+			<many-to-many class="com.unit.entities.Paragraph"
+				column="PARAGRAPH_ID"></many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-4-25 14:39:05 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.test.junit.Boolea" table="BOOLEA">
+        <id name="ids" type="int">
+            <column name="IDS" />
+            <generator class="assigned" />
+        </id>
+        <property name="rawcontent" type="org.hibernate.type.TextType">
+            <column name="rawcontent" />
+        </property>
+        <property name="blg" type="boolean">
+            <column name="BLG" />
+        </property>
+    </class>
+</hibernate-mapping>

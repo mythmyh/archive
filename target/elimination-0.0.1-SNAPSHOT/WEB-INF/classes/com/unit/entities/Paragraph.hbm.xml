@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-4-22 11:34:20 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="com.unit.entities.Paragraph" table="PARAGRAPH">
+		<id name="id" type="java.lang.Integer" access="field">
+			<column name="PARAGRAPH_ID" />
+			<generator class="native" />
+		</id>
+		<property name="timestamp" type="java.sql.Timestamp">
+			<column name="TIMESTAMP" />
+		</property>
+		<property name="rawContent" type="org.hibernate.type.TextType">
+			<column name="RAWCONTENT"></column>
+		</property>
+		<property name="translation" type="java.lang.String">
+			<column name="TRANSLATION"></column>
+		</property>
+		<property name="index" type="java.lang.Integer">
+			<column name="P_INDEX"></column>
+		</property>
+
+		<many-to-one name="content" class="com.unit.entities.Content"
+			column="CONTENT_ID"></many-to-one>
+		<set name="set1" table="PARAGRAPH_PHRASE">
+			<key>
+				<column name="PARAGRAPH_ID" />
+			</key>
+
+			<many-to-many class="com.unit.entities.Phrase" column="word"></many-to-many>
+		</set>
+
+	</class>
+</hibernate-mapping>
