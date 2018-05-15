@@ -12,9 +12,9 @@
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- 配置扫描的包 -->
-    <context:component-scan base-package="milestone.regime.ambition" />
+    <context:component-scan base-package="com.translation.prime" />
    
-    <context:component-scan base-package="interpret.clarify.prompt">
+    <context:component-scan base-package="com.translation.utils">
     </context:component-scan>
 
 

@@ -10,13 +10,7 @@ public class BatInit {
 	Process p1;
 	Process p2;
 	public BatInit() throws IOException, InterruptedException {
-		try {
-			InetAddress address = InetAddress.getLocalHost();
-			String hostAddress = address.getHostAddress();
-			System.out.println(hostAddress);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	
 
 		URL uri = BatInit.class.getResource("hub.bat");
 		String jpg = uri.toString().substring(6);

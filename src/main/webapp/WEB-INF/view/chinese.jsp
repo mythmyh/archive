@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Testing websockets</title>
+<title>Translation Program</title>
 <style type="text/css">
 p {text-indent: 2em; margin: 5px; font-size: 4vw;}
  span {color:DeepSkyBlue}
- .icon{width:68px;height:68px; background:url('a.jpg');display:inline-block;}
+ .icon{width:68px;height:68px; background:url('./background/a.jpg');display:inline-block;}
  .ss {
 color:	Crimson
 }
@@ -20,7 +20,7 @@ color:	Crimson
     
 } 
 </style>
-<script type="text/javascript" src="jquery-3.3.1.js"></script>
+<script type="text/javascript" src="./js/jquery-3.3.1.js"></script>
 <script>
 		function hide(ob) {
 			var id = $(ob).attr("id");
@@ -39,7 +39,7 @@ color:	Crimson
   <p id="messages"/>
   <script type="text/javascript" charset="UTF-8">
     var webSocket =
-      new WebSocket('ws://192.168.0.115:9000/elimination/websocketMain');
+      new WebSocket('ws://192.168.1.110:9000/elimination/websocketMain');
    
     webSocket.onerror = function(event) {
         onError(event)
@@ -131,12 +131,12 @@ var psize=document.getElementById('csb').value;
 		
 			// document.getElementsByTagName('img')[0].setAttribute('src','3.jpg');
 			var player = $("#player")[0]; /*jquery对象转换成js对象*/
-			player.setAttribute('src', './soundtrack/news/'+value);
+			player.setAttribute('src', './soundtrack/news/${requestScope.contentid}/'+value);
 
 			player.play(); /*播放*/
 
 			player.onended = function() {
-				player.src = './soundtrack/news/'+ss.shift()+'.mp3';
+				player.src = './soundtrack/news/${requestScope.contentid}/'+ss.shift()+'.mp3';
 				player.play();
 				if (ss.length == 0) {
 
@@ -157,7 +157,7 @@ var psize=document.getElementById('csb').value;
 		
 			// document.getElementsByTagName('img')[0].setAttribute('src','3.jpg');
 			var player = $("#player")[0]; /*jquery对象转换成js对象*/
-			player.setAttribute('src', './soundtrack/news/'+value);
+			player.setAttribute('src', './soundtrack/news/${requestScope.contentid}/'+value);
 			if (player.paused){ /*如果已经暂停*/
 	            player.play(); /*播放*/
 	        }else {
@@ -166,7 +166,7 @@ var psize=document.getElementById('csb').value;
 
 		}
 	</script>
-	
+
 	<span  class ="back"></span>
   </body>
   </html>

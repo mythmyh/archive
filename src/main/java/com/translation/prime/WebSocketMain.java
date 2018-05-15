@@ -8,11 +8,14 @@ import javax.websocket.server.ServerEndpoint;
 import com.translation.utils.SaveSound;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @ServerEndpoint("/websocketMain")
 public class WebSocketMain {
+	static Map<String, String> urls;;
 	static String url;
 
 	@OnMessage
@@ -22,28 +25,18 @@ public class WebSocketMain {
 		// System.out.println("Received: " + message);
 
 		// Send the first message to the client
-		
+
 		message = URLDecoder.decode(message, "utf-8");
-		//声音文件有可能不能用，判断是更新文件还是翻译网址
-		if (message.equals("1")) {
+		// 声音文件有可能不能用，判断是更新文件还是翻译网址
+		for (String url1 : urls.keySet()) {
 			try {
 				session.getBasicRemote().sendText("准备翻译...<br>");
-				Juicy jx = new Juicy(session, url);
+				Juicy jx = new Juicy(session, url1);
 				jx.transformer();
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("本篇文章未能成功翻译！");
 			}
-		} else {
-			Pattern p = Pattern.compile("^\\d+");
-			Matcher m = p.matcher(message);
-			m.find();
-			String index = m.group();
-			int num = Integer.parseInt(index);
-			String resource = message.substring(index.length());
-			System.out.println(message);
-			new SaveSound().save(num, resource);
-
 		}
 
 		// Send 3 messages to the client every 5 seconds

@@ -1,22 +1,32 @@
 package com.translation.utils;
+
 //保存声音文件
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
+import com.translation.prime.TestSoundTrack;
+import com.unit.entities.Content;
 
 public class SaveSound {
-    	public static String s = System.getenv("catalina_home");
+	public static String s = System.getenv("catalina_home");
+	public static int contentid;
 
 	public SaveSound() {
 		super();
 
 		// TODO Auto-generated constructor stub
+	}
+
+	public static void makeDirs() {
+		File soundtrack = new File(s + "\\webapps\\elimination\\final\\soundtrack\\news\\" + contentid + "\\");
+		if (!soundtrack.exists())
+			soundtrack.mkdirs();
+
 	}
 
 	public void save(int i, String source) throws IOException {
@@ -33,7 +43,7 @@ public class SaveSound {
 
 		// 得到输入流
 		InputStream in = conn.getInputStream();
-		//System.out.print(in.available());
+		// System.out.print(in.available());
 		// 获取自己数组
 
 		byte[] data = new byte[1024];
@@ -44,18 +54,43 @@ public class SaveSound {
 
 		byte[] sound = out.toByteArray();
 
-		File soundtrack = new File(s + "\\webapps\\elimination\\soundtrack\\news\\" + i + ".mp3");
+		File soundtrack = new File(s + "\\webapps\\elimination\\final\\soundtrack\\news\\" + contentid + "\\" + i + ".mp3");
 
 		FileOutputStream output = new FileOutputStream(soundtrack);
 		output.write(sound);
 		in.close();
 		output.close();
+		TestSoundTrack test = new TestSoundTrack();
+		boolean s = test.check(soundtrack);
+		if (s) {
+			// System.out.print("循环存储次数:"+saveTimes);
+
+			File file = new File(SaveSound.s + "\\webapps\\elimination\\soundtrack\\news\\" + i + ".mp3");
+			this.copyFile(soundtrack, file);
+
+		} else {
+			save(i, source);
+			System.out.println("重载音频文件代号：" + i);
+
+		}
 
 		// System.out.println(element.getText());
 		// 关闭浏览器
 		// driver.close();
 	}
 
+	public void copyFile(File fromFile, File toFile) throws IOException {
+		FileInputStream ins = new FileInputStream(fromFile);
+		FileOutputStream out = new FileOutputStream(toFile);
+		byte[] b = new byte[1024];
+		int n = 0;
+		while ((n = ins.read(b)) != -1) {
+			out.write(b, 0, n);
+		}
+
+		ins.close();
+		out.close();
+	}
 
 	public static boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {

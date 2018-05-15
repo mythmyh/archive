@@ -17,9 +17,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.translation.utils.SaveSound;
+
 //封装类，websocket打开时候启动访问
 public class Juicy {
 	Session session;
+	String title;
 	// static SelectDriver sd = SelectDriver.instance();
 	// static WebDriver driver = sd.driverName("chrome");
 	//
@@ -99,13 +101,21 @@ public class Juicy {
 		} catch (Exception e) {
 		} finally {
 			// foxnews换成article-body,abcnews换成artile-copy
+			try {
+				WebElement head_line = driver.findElement(By.className("head1"));
+				title = head_line.getText();
+			} catch (Exception e) {
+				System.out.print("未能获取标题！");
+				title = "error";
+			}
+
 			WebElement element = driver.findElement(By.className("article-body"));
 			Thread.sleep(3000);
 			List<WebElement> sets = element.findElements(By.tagName("p"));
 			for (WebElement ele : sets) {
-			
+
 				// ==0是为了适配abcnews才加的
-				if (ele.getText().equals(" ") || (ele.getText().length()==0)) {
+				if (ele.getText().equals(" ") || (ele.getText().length() == 0)) {
 					continue;
 				} else {
 					int p = x++;
@@ -122,10 +132,10 @@ public class Juicy {
 
 		String s = SaveSound.s + "\\webapps\\elimination\\soundtrack\\news\\";
 		File f = new File(s);
-		if (f.exists())
-			SaveSound.deleteDir(f);
-		File se = new File(s);
-		se.mkdirs();
+		if (!f.exists()) {
+			File se = new File(s);
+			se.mkdirs();
+		}
 
 		int t = 0;
 		if (map.size() > 5) {
@@ -138,17 +148,16 @@ public class Juicy {
 			System.out.println("需要" + t + "个补偿线程...");
 			Horse.ex = t;
 
-			new CarrierMain(6, map, session);
+			new CarrierMain(6, map, session, url, title);
 			// // barrier加速线程
 		} else {
-			new CarrierMain(map.size(), map, session);
+			new CarrierMain(map.size(), map, session, url, title);
 		}
-	
+
 	}
 
 	public Juicy(Session session) {
 		super();
 		this.session = session;
 	}
-	}
-
+}
