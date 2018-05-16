@@ -1,5 +1,6 @@
 package com.translation.prime;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 //多线程类使用了cyclicbarrier，轮询开启线程
 import java.util.LinkedHashMap;
@@ -145,6 +146,7 @@ public class CarrierMain {
 				}
 				if (Horse.abc.size() == 0) {
 					new GenerateHtml(sessionFactory).generate(contentid);
+				
 					sessionFactory.close();
 					exec.shutdownNow();
 

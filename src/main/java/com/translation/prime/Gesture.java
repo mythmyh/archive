@@ -32,9 +32,7 @@ public class Gesture {
 		return "abc";
 	}
 
-	@RequestMapping("/frank")
-	public ModelAndView index(HttpSession session) {
-
+	public static Map<String, String> getUrls() {
 		Map<String, String> urls = new HashMap<>();
 		WebDriver driver = Juicy.chromeDriver();
 		try {
@@ -65,9 +63,16 @@ public class Gesture {
 			driver.close();
 			driver.quit();
 		}
-		WebSocketMain.urls = urls;
-		// ModelAndView model = new ModelAndView("translate", "urls", urls);
-		ModelAndView model = new ModelAndView("chinese");
+		return urls;
+	}
+
+	@RequestMapping("/frank")
+	public ModelAndView index(HttpSession session) {
+
+		Map<String, String> urls = getUrls();
+
+		ModelAndView model = new ModelAndView("translate", "urls", urls);
+
 		return model;
 	}
 
@@ -113,9 +118,8 @@ public class Gesture {
 
 		// String uri = request.getParameter("url");
 		WebSocketMain.url = url;
-		ModelAndView model = new ModelAndView("chinese");
-		Content p = Critical.content;
-		model.addObject("contentid", p.getId());
+		ModelAndView model = new ModelAndView("automatic");
+
 		return model;
 	}
 
@@ -159,6 +163,14 @@ public class Gesture {
 	public ModelAndView single() {
 		ActiveAction.showMessage();
 		ModelAndView model = new ModelAndView("abc");
+		return model;
+	}
+
+	@RequestMapping("auto")
+	public ModelAndView automatic() {
+//		Map<String, String> urls = getUrls();
+//		com.translation.automatic.WebSocketNext.urls=urls;
+		ModelAndView model = new ModelAndView("automatic");
 		return model;
 	}
 }

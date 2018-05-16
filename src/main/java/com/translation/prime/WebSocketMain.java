@@ -15,8 +15,7 @@ import java.util.regex.Pattern;
 
 @ServerEndpoint("/websocketMain")
 public class WebSocketMain {
-	static Map<String, String> urls;;
-	static String url;
+	public static String url;
 
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException, InterruptedException {
@@ -28,15 +27,14 @@ public class WebSocketMain {
 
 		message = URLDecoder.decode(message, "utf-8");
 		// 声音文件有可能不能用，判断是更新文件还是翻译网址
-		for (String url1 : urls.keySet()) {
-			try {
-				session.getBasicRemote().sendText("准备翻译...<br>");
-				Juicy jx = new Juicy(session, url1);
-				jx.transformer();
-			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-				System.out.println("本篇文章未能成功翻译！");
-			}
+
+		try {
+			session.getBasicRemote().sendText("准备翻译...<br>");
+			Juicy jx = new Juicy(session, url);
+			jx.transformer();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			System.out.println("本篇文章未能成功翻译！");
 		}
 
 		// Send 3 messages to the client every 5 seconds
