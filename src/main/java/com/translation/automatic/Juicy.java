@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import javax.websocket.Session;
@@ -19,9 +20,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.translation.utils.SaveSound;
 
 //封装类，websocket打开时候启动访问
-public class Juicy {
+public class Juicy implements Runnable {
 	Session session;
 	String title;
+	static CountDownLatch count;
 	// static SelectDriver sd = SelectDriver.instance();
 	// static WebDriver driver = sd.driverName("chrome");
 	//
@@ -106,7 +108,7 @@ public class Juicy {
 				title = head_line.getText();
 			} catch (Exception e) {
 				System.out.print("未能获取标题！");
-				title = "error";
+				title = url;
 			}
 
 			WebElement element = driver.findElement(By.className("article-body"));
@@ -138,6 +140,7 @@ public class Juicy {
 		}
 
 		int t = 0;
+		System.out.println("map.size():" + map.size());
 		if (map.size() > 5) {
 			if (map.size() % 6 != 0) {
 				t = 6 - map.size() % 6;
@@ -155,5 +158,17 @@ public class Juicy {
 	public Juicy(Session session) {
 		super();
 		this.session = session;
+	}
+
+	@Override
+	public void run() {
+		try {
+			this.transformer();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		count.countDown();
+
 	}
 }

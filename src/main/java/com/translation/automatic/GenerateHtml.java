@@ -1,32 +1,20 @@
 package com.translation.automatic;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
 import com.process.utils.PathFormat;
 import com.unit.entities.Content;
 import com.unit.entities.Paragraph;
@@ -49,8 +37,18 @@ public class GenerateHtml extends Thread {
 			List<Paragraph> paragraphs = session.createQuery(hql, Paragraph.class).setParameter("id", cid)
 					.getResultList();
 
+			// Integer s = 0;
+			// for (Paragraph p : paragraphs) {
+			// if (s < p.getIndex())
+			// s = p.getIndex();
+			// }
+			// System.out.println("最后一个段落是：" + s);
+			// if (s != 0)
+			// return;
 			Collections.sort(paragraphs);
 			Content content = paragraphs.get(0).getContent();
+			System.out.println(
+					content.getId() + " 相等吗？？map:" + (content.getTotalParagraphs() + ",实际插入:" + paragraphs.size()));
 			int contentid = content.getId();
 			String title = content.getTitle();
 			File file1 = new File(GenerateHtml.class.getResource("").getPath() + "/chinese.jsp");
@@ -60,7 +58,7 @@ public class GenerateHtml extends Thread {
 
 			// FileWriter fw = new FileWriter(path.substring(0, path.length() -
 			// 1) + "//content//" + contentid + ".html");
-			
+
 			OutputStreamWriter fw = new OutputStreamWriter(
 					new FileOutputStream(
 							path.substring(0, path.length() - 1) + "//final//content//" + contentid + ".html"),
@@ -132,7 +130,7 @@ public class GenerateHtml extends Thread {
 			// System.out.println(p.getWord()+"--->"+p.getTranslate_in());
 			// }
 			// session.save(phrase1);
-			content.setTotalParagraphs(paragraphs.size());
+			// content.setTotalParagraphs(paragraphs.size());
 			content.setTotalPhrases(words.size());
 			session.save(content);
 			session.getTransaction().commit();

@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.websocket.Session;
@@ -38,11 +39,12 @@ public class Critical implements Runnable {
 	Session session;
 	public SessionFactory sessionFactory;
 
-	public Critical(String eng, int index, Session session, SessionFactory sessionFactory) {
+	public Critical(String eng, int index, Session session, SessionFactory sessionFactory, ExecutorService exec) {
 		this.eng = eng;
 		this.index = index;
 		this.session = session;
 		this.sessionFactory = sessionFactory;
+
 	}
 
 	@Override
@@ -92,6 +94,7 @@ public class Critical implements Runnable {
 		SaveSound save = new SaveSound();
 		try {
 			save.save(index, encodeString);
+
 		} catch (IOException e3) {
 			// TODO Auto-generated catch block
 			System.out.println("保存出错！");
@@ -112,23 +115,28 @@ public class Critical implements Runnable {
 		try {
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		} catch (Exception e) {
+			System.out.println("超时！");
+
+			e.printStackTrace();
 
 		}
 		LinkedHashSet<String> words = new LinkedHashSet<>();
-		WebElement container2=null;
-		try{
-		 container2 = driver.findElement(By.className("target-output"));
-		}catch(Exception e){
-			
+		WebElement container2 = null;
+		try {
+			container2 = driver.findElement(By.className("target-output"));
+		} catch (Exception e) {
+			System.out.println("找不到target-output");
+
+			e.printStackTrace();
+
 		}
-		String chinese=null;
-		if(container2 != null ){
-			chinese=container2.getText();
-		}else {
-			chinese="服务器未能响应！";
-			
+		String chinese = null;
+		if (container2 != null) {
+			chinese = container2.getText();
+		} else {
+			chinese = "服务器未能响应！";
+
 		}
-		
 
 		//
 		// 给重要单词上色
@@ -137,79 +145,91 @@ public class Critical implements Runnable {
 			couples = new DriverMain().getWords(driver);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
+			System.out.println("找不到单词组");
+
 			e1.printStackTrace();
 		}
-		
-		//if (couples != null && couples.size() > 0) {
-		 {
+
+		// if (couples != null && couples.size() > 0) {
+		{
+
 			org.hibernate.Session sessionx = sessionFactory.openSession();
-			sessionx.getTransaction().begin();
-			paragraph = new Paragraph(time1, content,index);
-			paragraph.setTranslation(chinese);
 			
-			paragraph.setRawContent(encodeString);
-			// encodeString =URLDecoder.decode(encodeString, "utf-8");
-			for (String se : couples.keySet()) {
-				int x = i.getAndAdd(1);
-				int c = i.getAndAdd(1);
-				String jk = se.trim();
-				Phrase phrase1;
+				sessionx.getTransaction().begin();
+				paragraph = new Paragraph(time1, content, index);
+				paragraph.setTranslation(chinese);
 
-				try {
-			
-					if ((phrase1 = sessionx.get(Phrase.class, jk)) == null) {
-						if (words.add(jk)) {
-							Phrase phrase = new Phrase(jk, couples.get(se), time1);
-							if (jk.matches("\\w+\\W\\w+")) {
-								phrase.setSingleWord(false);
+				paragraph.setRawContent(encodeString);
+				// encodeString =URLDecoder.decode(encodeString, "utf-8");
+				if (couples != null) {
+					for (String se : couples.keySet()) {
+						int x = i.getAndAdd(1);
+						int c = i.getAndAdd(1);
+						String jk = se.trim();
+						Phrase phrase1;
+
+						try {
+
+							if ((phrase1 = sessionx.get(Phrase.class, jk)) == null) {
+								if (words.add(jk)) {
+									Phrase phrase = new Phrase(jk, couples.get(se), time1);
+									if (jk.matches("\\w+\\W\\w+")) {
+										phrase.setSingleWord(false);
+									} else {
+										phrase.setSingleWord(true);
+									}
+									phrase.getParagraphs().add(paragraph);
+									paragraph.getSet1().add(phrase);
+									sessionx.save(phrase);
+								}
 							} else {
-								phrase.setSingleWord(true);
+								paragraph.getSet1().add(phrase1);
 							}
-							phrase.getParagraphs().add(paragraph);
-							paragraph.getSet1().add(phrase);
-							sessionx.save(phrase);
+
+						} catch (Exception e) {
+							e.printStackTrace();
+
+						} finally {
+
 						}
-					} else {
-						paragraph.getSet1().add(phrase1);
+
+						// 处理字符串加class，js点击事件等
+						if (jk.matches("\\w+\\W\\w+")) {
+							eng = eng.replace(se,
+									"<span  class=\"ss\" id=\" " + x + "\" onclick=\"hide(this)\">" + se
+											+ "</span><span class=\"word\" id=\"" + c + "\" style=\"display: none;\">【"
+											+ couples.get(se) + "】</span>");
+
+						} else {
+							eng = eng.replace(se,
+									"<span  id=\" " + x + "\" onclick=\"hide(this)\">" + se + "</span><span id=\"" + c
+											+ "\" style=\"display: none;\" class=\"word\">【" + couples.get(se)
+											+ "】</span>");
+						}
 					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
-
-				} finally {
-
 				}
+				sessionx.save(paragraph);
+				sessionx.getTransaction().commit();
+			
 
-				// 处理字符串加class，js点击事件等
-				if (jk.matches("\\w+\\W\\w+")) {
-					eng = eng.replace(se,
-							"<span  class=\"ss\" id=\" " + x + "\" onclick=\"hide(this)\">" + se
-									+ "</span><span class=\"word\" id=\"" + c + "\" style=\"display: none;\">【"
-									+ couples.get(se) + "】</span>");
-
-				} else {
-					eng = eng.replace(se, "<span  id=\" " + x + "\" onclick=\"hide(this)\">" + se + "</span><span id=\""
-							+ c + "\" style=\"display: none;\" class=\"word\">【" + couples.get(se) + "】</span>");
-				}
-			}
-			sessionx.save(paragraph);
-			sessionx.getTransaction().commit();
-			sessionx.close();
+				
+				sessionx.close();
+			
 
 		}
 
 		// Send the first message to the client
-		String j = "    <div data-id=\"" + index + "\"><p>" + index + "  " + chinese+ "</p><br><p >" + eng
+		String j = "    <div data-id=\"" + index + "\"><p>" + index + "  " + chinese + "</p><br><p >" + eng
 				+ "<span class=\"icon\" onmouseover=\"playSolo(this.id)\" id=\"" + index
 				+ ".mp3\"></span></p><br><br></div>";
 
 		try {
 			try {
-//				synchronized (session) {
-//					session.getBasicRemote().sendText(j);
-//				}
+				// synchronized (session) {
+				// session.getBasicRemote().sendText(j);
+				// }
 				Thread.sleep(3000);
-			} catch ( InterruptedException e) {
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

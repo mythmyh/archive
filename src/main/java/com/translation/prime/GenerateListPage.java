@@ -41,7 +41,7 @@ public class GenerateListPage {
 		Reader reader = new FileReader(file1);
 		BufferedReader br = new BufferedReader(reader);
 		String path = PathFormat.rootPath(GenerateHtml.class);
-		//防止乱码
+		// 防止乱码
 		OutputStreamWriter fw = new OutputStreamWriter(
 				new FileOutputStream(
 						path.substring(0, path.length() - 1) + "//final//date//" + dx.format(today) + ".html"),
@@ -55,6 +55,8 @@ public class GenerateListPage {
 				bufw.newLine();
 				for (Content c : contents) {
 					if (dx.format(today).equals(dx.format(c.getTimestamp()))) {
+						if (c.getId() == null)
+							session.delete(c);
 						bufw.write("<a href =\"..\\content\\" + c.getId() + ".html\">" + c.getTitle() + "</a><br>");
 						bufw.newLine();
 						bufw.write(c.toString() + "<br>");
@@ -73,6 +75,8 @@ public class GenerateListPage {
 		br.close();
 		bufw.flush();
 		bufw.close();
+		session.close();
+		sessionFactory.close();
 
 	}
 

@@ -90,14 +90,16 @@ public class HasSessionThread extends Thread {
 		// driver = new ChromeDriver();
 		//
 		// driver.get("http://www.baidu.com");
-		File filex = new File(HasSessionThread.class.getResource("").getPath());
-		String root = URLDecoder.decode(filex.getAbsolutePath(), "utf-8").replaceAll("\\+", "%20").substring(0, 22);
-		String jsp = root + "src\\main\\webapp\\index.jsp";
-
-		String java = root + "src\\main\\java\\com\\translation\\prime\\Gesture.java";
-		changeJSP(jsp, "showMessage");
-		changeJava(java, "ActiveAction", "showMessage");
-
+//		File filex = new File(HasSessionThread.class.getResource("").getPath());
+//		String root = URLDecoder.decode(filex.getAbsolutePath(), "utf-8").replaceAll("\\+", "%20").substring(0, 22);
+//		String jsp = root + "src\\main\\webapp\\index.jsp";
+//
+//		String java = root + "src\\main\\java\\com\\translation\\prime\\Gesture.java";
+//		changeJSP(jsp, "showMessage");
+//		changeJava(java, "ActiveAction", "showMessage");
+		File soundtrack = new File(s + "\\webapps\\elimination\\final\\soundtrack\\news\\" + 50);
+		System.out.println(soundtrack.getAbsolutePath());
+		System.out.println(soundtrack.exists());
 	}
 
 	public static void deleter() {

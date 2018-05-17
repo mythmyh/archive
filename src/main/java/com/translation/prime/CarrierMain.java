@@ -1,6 +1,4 @@
 package com.translation.prime;
-
-import java.io.IOException;
 import java.sql.Timestamp;
 //多线程类使用了cyclicbarrier，轮询开启线程
 import java.util.LinkedHashMap;
@@ -119,7 +117,8 @@ public class CarrierMain {
 		this.title = title;
 		this.session = session;
 		this.map = map;
-		Content content = new Content(title, rawUrl, new Timestamp(System.currentTimeMillis()));
+		Integer total=map.size();
+		Content content = new Content(title, rawUrl, new Timestamp(System.currentTimeMillis()),total);
 
 		System.out.println(content.getId());
 
@@ -127,8 +126,10 @@ public class CarrierMain {
 		sessionx.getTransaction().begin();
 		sessionx.save(content);
 		Critical.content = content;
-		SaveSound.contentid = content.getId();
-		contentid = content.getId();
+		Integer content_id = content.getId();
+		SaveSound.contentid = content_id;
+		contentid = content_id;
+		WebSocketMain.contentid = content_id;
 		SaveSound.makeDirs();
 		sessionx.getTransaction().commit();
 		sessionx.close();
@@ -146,7 +147,7 @@ public class CarrierMain {
 				}
 				if (Horse.abc.size() == 0) {
 					new GenerateHtml(sessionFactory).generate(contentid);
-				
+                       System.out.println("===");   
 					sessionFactory.close();
 					exec.shutdownNow();
 

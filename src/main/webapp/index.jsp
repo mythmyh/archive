@@ -27,6 +27,6 @@
 	<a href="showMessage">showMessage</a>
 	<br>
 	<br>
-	<a href="auto">Automatic Translation</a>
+	<a href="auto">Automatic Translation List==========></a>
 </body>
 </html>

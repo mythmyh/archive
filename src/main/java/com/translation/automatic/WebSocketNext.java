@@ -5,16 +5,28 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
+import org.hibernate.SessionFactory;
+
+import com.translation.utils.SaveSound;
+import com.unit.entities.Content;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 @ServerEndpoint("/websocketNext")
 public class WebSocketNext {
 	public static Map<String, String> urls;;
+	static String s = System.getenv("catalina_home");
+	static Content content;
+	static Integer contentid = null;
+	public static SessionFactory sessionFactory;
 
 	@OnMessage
-	public void onMessage(String message, Session session)  {
+	public void onMessage(String message, Session session) {
 
 		// Print the client message for testing purposes
 		// System.out.println("Received: " + message);
@@ -26,21 +38,59 @@ public class WebSocketNext {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		int i = 0;
-		// 声音文件有可能不能用，判断是更新文件还是翻译网址
-		// for (String url1 : urls.keySet()) {
+
+		// CarrierMain.urls2 = urls;
+		//
+		// CountDownLatch count = new CountDownLatch(7);
+		// Juicy.count = count;
 		// try {
-		// Juicy jx = new Juicy(session, url1);
-		// jx.transformer();
+		//
+		// for (String url : urls.keySet()) {
 		// i++;
-		// if (i == 7) {
+		// if (i == 7)
 		// break;
+		// new Thread(new Juicy(session, url)).start();
 		// }
-		// } catch (Throwable e) {
-		// // TODO Auto-generated catch block
+		//
+		// } catch (Exception e) {
+		//
 		// }
-		// }
+
+		for (String url1 : urls.keySet()) {
+			Juicy jx = new Juicy(session, url1);
+			try {
+				jx.transformer();
+				Thread.sleep(60000);
+
+				// 如果下一个报错会把这一个好的给删除了，不可取，借刀杀人，嫁祸他人。
+
+			} catch (Throwable e) {
+				if (!sessionFactory.isClosed())
+					sessionFactory.close();
+				System.out.println("==本篇文章未能成功翻译！");
+
+				File soundtrack = new File(s + "\\webapps\\elimination\\final\\soundtrack\\news\\" + contentid);
+
+				File html = new File(s + "\\webapps\\elimination\\final\\content\\" + contentid + ".html");
+				if (html.exists())
+					html.delete();
+				System.out.println("声音路径是否存在：" + soundtrack.exists());
+				if (soundtrack.exists())
+					SaveSound.deleteDir(soundtrack);
+				e.printStackTrace();
+				// TODO Auto-generated catch block
+
+			} finally {
+				contentid = null;
+			}
+			i++;
+			if (i == 7) {
+				break;
+			}
+
+		}
 
 		System.out.println("---------->");
 

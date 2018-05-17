@@ -6,6 +6,8 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import com.translation.utils.SaveSound;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -16,6 +18,8 @@ import java.util.regex.Pattern;
 @ServerEndpoint("/websocketMain")
 public class WebSocketMain {
 	public static String url;
+	static String s = System.getenv("catalina_home");
+	static Integer contentid = null;
 
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException, InterruptedException {
@@ -35,6 +39,11 @@ public class WebSocketMain {
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			System.out.println("本篇文章未能成功翻译！");
+			e.printStackTrace();
+			File soundtrack = new File(s + "\\webapps\\elimination\\final\\soundtrack\\news\\" + contentid);
+			if (soundtrack.exists()) {
+				SaveSound.deleteDir(soundtrack);
+			}
 		}
 
 		// Send 3 messages to the client every 5 seconds

@@ -168,8 +168,8 @@ public class Gesture {
 
 	@RequestMapping("auto")
 	public ModelAndView automatic() {
-//		Map<String, String> urls = getUrls();
-//		com.translation.automatic.WebSocketNext.urls=urls;
+		Map<String, String> urls = getUrls();
+		com.translation.automatic.WebSocketNext.urls=urls;
 		ModelAndView model = new ModelAndView("automatic");
 		return model;
 	}

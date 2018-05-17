@@ -1,20 +1,21 @@
 package com.translation.automatic;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 //多线程类使用了cyclicbarrier，轮询开启线程
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import javax.websocket.Session;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
 import com.translation.utils.SaveSound;
 import com.unit.entities.Content;
 
@@ -86,14 +87,13 @@ class Horse implements Runnable {
 				// barrier靠后
 				if (translate != null && (!translate.equals(" "))) {
 
-					new Thread(new Critical(translate, index, session, sessionFactory)).run();
+					new Thread(new Critical(translate, index, session, sessionFactory, exec)).run();
 				}
 				barrier.await();
 
 			}
 		} catch (InterruptedException | BrokenBarrierException e) {
-			// TODO Auto-generated catch block
-
+			e.printStackTrace();
 		}
 	}
 
@@ -103,6 +103,7 @@ public class CarrierMain {
 	String rawUrl = null;
 	String title = null;
 	public int contentid;
+	public static Map<String, String> urls2;;
 	StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure() // configures
 																						// settings
 																						// from
@@ -118,17 +119,20 @@ public class CarrierMain {
 		this.rawUrl = rawUrl;
 		this.title = title;
 		this.session = session;
+		this.map = null;
+		WebSocketNext.sessionFactory = sessionFactory;
 		this.map = map;
-		Content content = new Content(title, rawUrl, new Timestamp(System.currentTimeMillis()));
-
-		System.out.println(content.getId());
-
+		int total = map.size();
+		Content content = new Content(title, rawUrl, new Timestamp(System.currentTimeMillis()), total);
 		org.hibernate.Session sessionx = sessionFactory.openSession();
 		sessionx.getTransaction().begin();
 		sessionx.save(content);
 		Critical.content = content;
-		SaveSound.contentid = content.getId();
-		contentid = content.getId();
+		WebSocketNext.content = content;
+		Integer content_id = content.getId();
+		SaveSound.contentid = content_id;
+		contentid = content_id;
+		WebSocketNext.contentid = content_id;
 		SaveSound.makeDirs();
 		sessionx.getTransaction().commit();
 		sessionx.close();
@@ -147,14 +151,8 @@ public class CarrierMain {
 				if (Horse.abc.size() == 0) {
 					new GenerateHtml(sessionFactory).generate(contentid);
 
-					try {
-						session.getBasicRemote().sendText("<p>文章编号为：" + contentid + "已经翻译完成！</p>");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					sessionFactory.close();
-					exec.shutdownNow();
+					exec.shutdown();
 
 				}
 

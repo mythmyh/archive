@@ -78,18 +78,17 @@ public class Content {
 		this.paragraphs = paragraphs;
 	}
 
-	public Content(String title, String rawUrl, Timestamp timestamp) {
+	public Content(String title, String rawUrl, Timestamp timestamp, Integer total) {
 		super();
 		this.title = title;
 		this.rawUrl = rawUrl;
 		this.timestamp = timestamp;
+		this.totalParagraphs = total;
 	}
 
 	@Override
 	public String toString() {
 		return "本文一共有 " + totalParagraphs + "个段落, " + totalPhrases + "个单词。";
 	}
-
-	
 
 }
