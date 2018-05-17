@@ -49,6 +49,11 @@ public class GenerateHtml extends Thread {
 			Content content = paragraphs.get(0).getContent();
 			System.out.println(
 					content.getId() + " 相等吗？？map:" + (content.getTotalParagraphs() + ",实际插入:" + paragraphs.size()));
+			
+			if( content.getTotalParagraphs()!= paragraphs.size()) {
+				System.out.println("数据不完整！");
+				return;
+			}
 			int contentid = content.getId();
 			String title = content.getTitle();
 			File file1 = new File(GenerateHtml.class.getResource("").getPath() + "/chinese.jsp");
